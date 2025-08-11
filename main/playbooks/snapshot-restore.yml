@@ -1,0 +1,23 @@
+# ansible-playbook -i inventory.yml main/playbooks/snapshot-restore.yml -e "service_name=heimdall/bor provider=vaultstaking network=amoy/mainnet"
+
+- name: Sync Polygon Node from Snapshot
+  hosts: all
+  become: yes
+  roles:
+  - role: roles/vaultstaking_heimdall
+    when: service_name == 'heimdall' and provider == "vaultstaking"
+
+  - role: roles/vaultstaking_bor
+    when: service_name == 'bor' and provider == "vaultstaking"
+
+  - role: roles/girnaar_heimdall
+    when: service_name == 'heimdall' and provider == "girnaartech"
+
+  - role: roles/girnaar_bor
+    when: service_name == 'bor' and provider == "girnaartech"
+
+  - role: roles/stakepool_heimdall
+    when: service_name == 'heimdall' and provider == "stakepool"
+
+  - role: roles/stakepool_bor
+    when: service_name == 'bor' and provider == "stakepool"
